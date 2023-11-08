@@ -6,6 +6,8 @@ const app: Express = express();
 
 app.listen(PORT, () => {
   console.log(`The web server is running at the port: ${PORT}`);
+  const tempToken = process.env.TEMP_TOKEN || "not detected";
+  console.log(`Token: ${tempToken}`);
 });
 
 app.get("/", (q, res) => {
@@ -26,11 +28,16 @@ app.get("/stream", (req, res: Response) => {
   stream.write(formatMessage("connected"));
 });
 
-
 app.get("/send", (req, res) => {
   console.log("request");
   const message = req.query.m;
   typeof message === "string"
     ? stream.write(formatMessage(message))
     : console.log("The message is wrong:", req.query);
+});
+
+app.get("/log", (q, res) => {
+  const message = `[LOG]: ${q.query.m}`;
+  console.log(message);
+  res.end(message);
 });
