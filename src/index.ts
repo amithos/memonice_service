@@ -37,7 +37,8 @@ app.get("/send", (req, res) => {
 });
 
 app.get("/log", (q, res) => {
-  const message = `[LOG]: ${q.query.m}`;
+  const message = `[LOG]: ${q.query.m || "There is no message :/"}`;
+  console.log("IP", q.ip);
   console.log(message);
   res.end(message);
 });
