@@ -4,6 +4,24 @@ const PORT = 2989;
 
 const app: Express = express();
 
+app.use((req, res, next) => {
+
+  const allowedIP = process.env.PAGE_IP;
+  const header = req.headers;
+  console.log(`Assumed IP: ${req.headers['x-forwarded-for']}`);
+  console.log(header);
+
+  //TODO: block other than allwed IP and set it to the env value
+  if (req.ip !== allowedIP || req.ip !== "::1") {
+    console.log("[IP]: ", req.ip);
+  }
+
+  res.header('Access-Control-Allow-Origin', '*'); // SECOND FIELD - process.env.PAGE_IP
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, AUTHORIZATION');
+  next();
+});
+
 app.listen(PORT, () => {
   console.log(`The web server is running at the port: ${PORT}`);
   const tempToken = process.env.TEMP_TOKEN || "not detected";
