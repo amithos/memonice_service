@@ -1,31 +1,36 @@
-import express, {Express, Response} from "express";
+import express, {Express, Response, NextFunction} from "express";
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 
-const PORT = 2989;
+import config from "./config";
+
+import adminRouter from "./routes/Admin";
+import { Paths } from "./constants/Paths";
+
+type MiddlewareType = (req: Request, res: Response, next: NextFunction) => void;
+
+const PORT = process.env.PORT || config.PORT;
+const ORIGIN = process.env.ORIGIN || config.ORIGIN;
+const CUSTOM_HEADER = process.env.CUSTOM_HEADER || config.CUSTOM_HEADER;
+const HOST = process.env.HOST || config.HOST;
 
 const app: Express = express();
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use((req, res, next) => {
-
-  const allowedIP = process.env.PAGE_IP;
-  const header = req.headers;
-  console.log(`Assumed IP: ${req.headers['x-forwarded-for']}`);
-  console.log(header);
-
-  //TODO: block other than allwed IP and set it to the env value
-  if (req.ip !== allowedIP || req.ip !== "::1") {
-    console.log("[IP]: ", req.ip);
-  }
-
-  res.header('Access-Control-Allow-Origin', '*'); // SECOND FIELD - process.env.PAGE_IP
+  res.header('Access-Control-Allow-Origin', '*'); //maybe set origin of gh-page
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, AUTHORIZATION');
   next();
 });
 
+
+app.use("/admin", adminRouter);
+
 app.listen(PORT, () => {
   console.log(`The web server is running at the port: ${PORT}`);
-  const tempToken = process.env.TEMP_TOKEN || "not detected";
-  console.log(`Token: ${tempToken}`);
 });
 
 app.get("/", (q, res) => {
@@ -56,7 +61,8 @@ app.get("/send", (req, res) => {
 
 app.get("/log", (q, res) => {
   const message = `[LOG]: ${q.query.m || "There is no message :/"}`;
-  console.log("IP", q.ip);
-  console.log(message);
+  console.log(`Is it the right host: ${q.headers.host === HOST}`);
+  console.log(message, "↓↓↓↓↓");
+  console.log(q.headers.host);
   res.end(message);
 });
