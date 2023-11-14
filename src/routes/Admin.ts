@@ -1,9 +1,8 @@
 import {Router} from "express";
-import config from "../config";
 import AdminConnectionObserver from "../services/main_stream/AdminConnectionObserver/AdminConnector";
 
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || config.ADMIN_PASSWORD;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const router = Router();
 
 router.get("/", (req, res) => {

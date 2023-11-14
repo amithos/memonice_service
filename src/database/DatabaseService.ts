@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import config from "../config";
 
 class DatabaseService {
   private static instance: DatabaseService;
@@ -14,7 +13,7 @@ class DatabaseService {
   }
 
   async connect() {
-    const pass = config.DATABASE_PASSWORD;
+    const pass = process.env.DATABASE_PASSWORD;
     const connection = await mongoose.connect(`mongodb+srv://render:${pass}@memonice.2zvaxvz.mongodb.net/?retryWrites=true&w=majority`);
     this.connection = connection;
     return connection;
