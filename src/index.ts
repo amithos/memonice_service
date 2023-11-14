@@ -2,17 +2,15 @@ import express, {Express, Response, NextFunction} from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 
-import config from "./config";
-
 import adminRouter from "./routes/Admin";
 import { Paths } from "./constants/Paths";
 
 type MiddlewareType = (req: Request, res: Response, next: NextFunction) => void;
 
-const PORT = process.env.PORT || config.PORT;
-const ORIGIN = process.env.ORIGIN || config.ORIGIN;
-const CUSTOM_HEADER = process.env.CUSTOM_HEADER || config.CUSTOM_HEADER;
-const HOST = process.env.HOST || config.HOST;
+const PORT = process.env.PORT;
+const ORIGIN = process.env.ORIGIN;
+const CUSTOM_HEADER = process.env.CUSTOM_HEADER;
+const HOST = process.env.HOST;
 
 const app: Express = express();
 
