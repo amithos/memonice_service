@@ -59,8 +59,8 @@ app.get("/send", (req, res) => {
 
 app.get("/log", (q, res) => {
   const message = `[LOG]: ${q.query.m || "There is no message :/"}`;
-  console.log(`Is it the right host: ${q.headers.host === HOST}`);
+  //console.log(`Is it the right host: ${q.headers.host === HOST}`);
   console.log(message, "↓↓↓↓↓");
-  console.log(q.headers.host);
+  console.log(q);
   res.end(message);
 });
