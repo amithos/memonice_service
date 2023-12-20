@@ -1,6 +1,7 @@
 import express, {Express, Response, NextFunction} from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import data from "./secret_test.json";
 
 import adminRouter from "./routes/Admin";
 import { Paths } from "./constants/Paths";
@@ -29,6 +30,8 @@ app.use("/admin", adminRouter);
 
 app.listen(PORT, () => {
   console.log(`The web server is running at the port: ${PORT}`);
+  console.log("Just listen...");
+  console.log(data);
 });
 
 app.get("/", (q, res) => {
