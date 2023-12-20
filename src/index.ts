@@ -1,7 +1,7 @@
 import express, {Express, Response, NextFunction} from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
-import data from "./secretConfig.js";
+import data from "/etc/secrets/secretConfig.js";
 
 import adminRouter from "./routes/Admin";
 import { Paths } from "./constants/Paths";
